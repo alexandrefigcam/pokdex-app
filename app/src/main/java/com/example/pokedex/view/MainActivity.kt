@@ -29,20 +29,20 @@ import org.koin.android.ext.android.startKoin
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
-    private var mPokemonRecycler:RecyclerView? = null
-    private var mPikachu: LottieAnimationView? = null
-    private var pokeSearch:EditText? = null
-    private var topView: View? = null
-    private var scroll_view:ScrollView? = null
-    private var load_poke:LottieAnimationView? = null
-    private var pokedex_logo:ImageView? = null
-    private var pikachu_container:LinearLayout? = null
+    private var mPokemonRecycler:RecyclerView? = null//Pokemons' list recycler view
+    private var mPikachu: LottieAnimationView? = null //Pikachu's face lottie animation
+    private var pokeSearch:EditText? = null // SApp's search tool
+    private var topView: View? = null //Header containing  the search tool and pikachu's animation
+    private var scroll_view:ScrollView? = null //Scroll view containing the recycler view
+    private var load_poke:LottieAnimationView? = null //Lottie animation for inicial loading
+    private var pokedex_logo:ImageView? = null //Logo for inicial loading screen
+    private var pikachu_container:LinearLayout? = null //Linear layout wich conatins the pikachu's lottie animation
 
 
 
 
-    private val mMainViewModel:MainViewModel by inject()
-    private val mAdapter:MainAdapter by inject()
+    private val mMainViewModel:MainViewModel by inject() //Main ViewModel by dependency injection
+    private val mAdapter:MainAdapter by inject() // Main Adapter by dependency injection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,44 +53,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             supportActionBar!!.hide()
         }
 
-        mPokemonRecycler = findViewById(R.id.recycler_pokemons)
-        mPikachu = findViewById(R.id.restart)
-        pokeSearch = findViewById(R.id.searchView)
-        topView = findViewById(R.id.view)
-        scroll_view = findViewById(R.id.scroll)
-        load_poke = findViewById(R.id.loading_pokeball)
-        pokedex_logo = findViewById(R.id.logo_pokedex)
-        pikachu_container = findViewById(R.id.container_pikachu)
 
-        mMainViewModel.fetchView()
 
-        mPokemonRecycler?.apply{
-            layoutManager = GridLayoutManager(context, 2)
-            adapter = mAdapter
-        }
+        attachIds() // Attach all the view's ids with the global variables
+        mMainViewModel.fetchView() //Sets the loading animation while the pokemons are being loaded
+        recyclerViewConfig() //Set up recycler view
 
 
 
+
+
+        //Starts the loading lottie animation
         load_poke?.setAnimation("poke_load.json")
         load_poke?.playAnimation()
 
+        //Starts the pikachu lottie animation
         mPikachu?.setAnimation("pikachu.json")
         mPikachu?.playAnimation()
 
 
 
+        onObserver()//Observes the ViewModel's variables
 
 
 
 
-
-
-
-        onObserver()
-
-
-
-
+        //Deals with the query for searching pokemon
         pokeSearch?.addTextChangedListener(object:TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -102,8 +90,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    private fun setView(){
+    private fun recyclerViewConfig(){
+        mPokemonRecycler?.apply{
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = mAdapter
+        }
 
+    }
+
+    private fun attachIds(){
+
+        mPokemonRecycler = findViewById(R.id.recycler_pokemons)
+        mPikachu = findViewById(R.id.restart)
+        pokeSearch = findViewById(R.id.searchView)
+        topView = findViewById(R.id.view)
+        scroll_view = findViewById(R.id.scroll)
+        load_poke = findViewById(R.id.loading_pokeball)
+        pokedex_logo = findViewById(R.id.logo_pokedex)
+        pikachu_container = findViewById(R.id.container_pikachu)
 
 
     }
