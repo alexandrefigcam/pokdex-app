@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-        onObserver()
+        setObserver()
 
 
 
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-    private fun onObserver(){
+    private fun setObserver(){
         mMainViewModel.mlistpokes.observe(this, Observer {
             mAdapter.updateAdapter(it)
         })
