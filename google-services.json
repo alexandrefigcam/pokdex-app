@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "142553226993",
+    "firebase_url": "https://pokedex-ac75e-default-rtdb.firebaseio.com",
+    "project_id": "pokedex-ac75e",
+    "storage_bucket": "pokedex-ac75e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142553226993:android:8a3b111c9d8e1e9df65350",
+        "android_client_info": {
+          "package_name": "com.example.pokedex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142553226993-te04a0gje3cl5tusfrj1jls3opi5tecn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXpVSlUdynVKEl-5Nk0jjczuQR6Dg4DGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142553226993-te04a0gje3cl5tusfrj1jls3opi5tecn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
