@@ -11,6 +11,8 @@ import com.example.pokedex.API.repository.PokeApiRepository
 import com.example.pokedex.local.repository.PokeRepository
 import dagger.android.AndroidInjection.inject
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MainViewModel(context: Context):ViewModel() {
@@ -71,30 +73,33 @@ class MainViewModel(context: Context):ViewModel() {
 
         val aux_name:MutableList<PokeModel> = arrayListOf()
         val job = CoroutineScope(Dispatchers.IO + Job()).launch {
-            for( k in 1..700){
-                mRepository.getPokemonNames(k.toString(), object:PokeApiListener{
-                    override fun onSucces(model: PokeModel) {
-                        aux_name.add(model)
-                        mLocalRepository.insertPokemon(model)
-                        mListPoke.postValue(aux_name)
-
-                    }
-
-                    override fun onFailure(str: String) {
-                        mErrorMessage.postValue(str)
-                    }
-
-                })
-
+            pokeFlow().collect {value ->
+                mListPoke.postValue(value)
             }
-
-
         }
         mCouroutineJob = job
 
 
 
 
+    }
+
+    suspend fun pokeFlow() = flow{
+        val aux_poke: MutableList<PokeModel> = arrayListOf()
+        for(k in 1..700){
+            mRepository.getPokemonNames(k.toString(), object:PokeApiListener{
+                override fun onSucces(model: PokeModel) {
+                    aux_poke.add(model)
+                    mLocalRepository.insertPokemon(model)
+                }
+
+                override fun onFailure(str: String) {
+
+                }
+
+            })
+        }
+        emit(aux_poke)
     }
 
     fun refresh(){
