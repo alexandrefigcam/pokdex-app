@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var load_poke:LottieAnimationView? = null //Lottie animation for inicial loading
     private var pokedex_logo:ImageView? = null //Logo for inicial loading screen
     private var pikachu_container:LinearLayout? = null //Linear layout wich conatins the pikachu's lottie animation
+    private var pokeball_deco:LinearLayout? = null
 
 
 
@@ -108,6 +109,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         load_poke = findViewById(R.id.loading_pokeball)
         pokedex_logo = findViewById(R.id.logo_pokedex)
         pikachu_container = findViewById(R.id.container_pikachu)
+        pokeball_deco = findViewById(R.id.poke_symball_deco)
 
 
     }
@@ -144,6 +146,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 scroll_view?.visibility = View.VISIBLE
                 pikachu_container?.visibility = View.VISIBLE
                 mPikachu?.visibility = View.VISIBLE
+                pokeball_deco?.visibility = View.VISIBLE
                 load_poke?.visibility = View.GONE
                 pokedex_logo?.visibility = View.GONE
 

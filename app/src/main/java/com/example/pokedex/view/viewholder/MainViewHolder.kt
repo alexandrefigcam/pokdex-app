@@ -29,11 +29,9 @@ class MainViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
 
          val poke_image = itemView.findViewById<ImageView>(R.id.image_poke)
          val name_poke = itemView.findViewById<TextView>(R.id.poke_name)
-         val lottie_container = itemView.findViewById<LinearLayout>(R.id.container_forLottie)
-         val egg_lottie = itemView.findViewById<LottieAnimationView>(R.id.egg_ani)
 
-         egg_lottie.setAnimation("egg_aniamtion.json")
-         egg_lottie.playAnimation()
+
+
 
 
 

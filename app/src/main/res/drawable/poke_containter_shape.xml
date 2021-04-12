@@ -7,7 +7,7 @@
         android:color="@color/purple_700"
         android:width="3dp"/>
     <gradient
-        android:endColor="#FFEB3B"
-        android:startColor="@color/white"/>
+        android:endColor="@color/white"
+        android:startColor="#FFEB3B"/>
 
 </shape>

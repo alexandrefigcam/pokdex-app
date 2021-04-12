@@ -9,4 +9,5 @@ interface PokeApiService {
 
     @GET("pokemon/{id}/")
     fun getPokeName(@Path("id") id:String): Call<PokeModel>
+
 }

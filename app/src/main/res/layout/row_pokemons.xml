@@ -7,33 +7,13 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/container_forLottie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/egg_ani"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_fileName="egg_aniamtion.json"/>
 
 
-    </LinearLayout>
 
-
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:background="@drawable/poke_containter_shape"
         android:orientation="vertical"
         android:padding="10dp"
@@ -44,9 +24,20 @@
 
 
         <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="left|top"
+            android:alpha="0.55"
+            app:tint="@color/white"
+            android:src="@drawable/pokeball"/>
+
+
+        <ImageView
             android:id="@+id/image_poke"
             android:layout_width="150dp"
             android:layout_height="100dp" />
+        
+
 
         <TextView
             android:id="@+id/poke_name"
@@ -54,10 +45,11 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Nome do pokemon"
+            android:layout_gravity="bottom"
             android:textColor="@color/purple_700"
             android:textSize="18sp"
             android:textStyle="bold" />
 
 
-    </LinearLayout>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
