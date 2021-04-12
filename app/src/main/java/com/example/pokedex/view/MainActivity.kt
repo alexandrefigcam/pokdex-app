@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.example.pokedex.InfoActivity
 import com.example.pokedex.R
 import com.example.pokedex.koinModules.mainActivityModules
+import com.example.pokedex.listener.FrameListener
 import com.example.pokedex.view.adapter.MainAdapter
 import com.example.pokedex.viewmodel.MainViewModel
 import kotlinx.coroutines.GlobalScope
@@ -45,6 +47,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val mMainViewModel:MainViewModel by inject() //Main ViewModel by dependency injection
     private val mAdapter:MainAdapter by inject() // Main Adapter by dependency injection
 
+    private lateinit var mListener:FrameListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -54,11 +58,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             supportActionBar!!.hide()
         }
 
+        mListener = object:FrameListener{
+            override fun onClick(id: String) {
+                val bundle = Bundle()
+                bundle.putString("poke_id", id)
+                val intent = Intent(applicationContext, InfoActivity::class.java)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+
+        }
+        mAdapter.attachListener(mListener)
+
 
 
         attachIds() // Attach all the view's ids with the global variables
         mMainViewModel.fetchView() //Sets the loading animation while the pokemons are being loaded
         recyclerViewConfig() //Set up recycler view
+
+
 
 
 
@@ -71,6 +89,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         //Starts the pikachu lottie animation
         mPikachu?.setAnimation("pikachu.json")
         mPikachu?.playAnimation()
+
+
 
 
 
