@@ -1,6 +1,7 @@
 package com.example.pokedex.local.repository
 
 import com.example.pokedex.API.model.PokeModel
+import com.example.pokedex.listener.DataListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -18,6 +19,51 @@ class PokeRepository {
 
 
 
+    }
+
+    fun existance(lisntener: DataListener){
+        val ref = FirebaseDatabase.getInstance().getReference("pokemons")
+
+        ref.addValueEventListener(object:ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(!snapshot.exists()){
+                    lisntener.Existence(false)
+                }else {
+                    lisntener.Existence(true)
+                }
+            }
+
+        })
+    }
+
+
+    fun loadData(onDataChangedCallback:(MutableList<PokeModel>) -> Unit){
+        val ref = FirebaseDatabase.getInstance().getReference("pokemons")
+
+
+        val aux:MutableList<PokeModel> = arrayListOf()
+
+        ref.addValueEventListener(object:ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for( h in snapshot.children){
+                    val poke = h.getValue(PokeModel::class.java)
+                    poke?.let { aux.add(it) }
+                }
+                onDataChangedCallback(aux)
+
+            }
+
+
+
+        })
     }
 
     fun refreshDataBase(){

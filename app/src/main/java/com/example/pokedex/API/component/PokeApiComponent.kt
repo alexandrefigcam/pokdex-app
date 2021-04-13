@@ -2,6 +2,7 @@ package com.example.pokedex.API.component
 
 import com.example.pokedex.API.module.ApiModule
 import com.example.pokedex.API.repository.PokeApiRepository
+import com.example.pokedex.view.viewholder.InfoViewModel
 import com.example.pokedex.viewmodel.MainViewModel
 import dagger.Component
 
@@ -11,4 +12,6 @@ interface PokeApiComponent {
     fun inject(viewModel:MainViewModel)
 
     fun inject(repository: PokeApiRepository)
+
+    fun inject(viewmodel:InfoViewModel)
 }

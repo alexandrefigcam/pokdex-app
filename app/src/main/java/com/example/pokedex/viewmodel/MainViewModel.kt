@@ -8,6 +8,7 @@ import com.example.pokedex.API.component.DaggerPokeApiComponent
 import com.example.pokedex.API.listener.PokeApiListener
 import com.example.pokedex.API.model.PokeModel
 import com.example.pokedex.API.repository.PokeApiRepository
+import com.example.pokedex.listener.DataListener
 import com.example.pokedex.local.repository.PokeRepository
 import dagger.android.AndroidInjection.inject
 import kotlinx.coroutines.*
@@ -66,6 +67,7 @@ class MainViewModel(context: Context):ViewModel() {
             mLoading.postValue(false)
         }
         mLoading.value = true
+
     }
 
     fun fetchPokeNames(){
@@ -103,9 +105,21 @@ class MainViewModel(context: Context):ViewModel() {
     }
 
     fun refresh(){
-        CoroutineScope(Dispatchers.Default).launch {
-            mLocalRepository.refreshDataBase()
+
+        CoroutineScope(Dispatchers.IO + Job()).launch {
+            mLocalRepository.existance(object : DataListener {
+                override fun Existence(exists: Boolean) {
+                   if(!exists){
+                       fetchPokeNames()
+                   } else {
+                       loadExistingData()
+
+                   }
+                }
+
+            })
         }
+
 
     }
 
@@ -122,6 +136,20 @@ class MainViewModel(context: Context):ViewModel() {
 
     private fun handleDataChanged(list:MutableList<PokeModel>){
         mFilteredList.postValue(list)
+    }
+
+
+    private fun handleExistingData(list: MutableList<PokeModel>){
+        mListPoke.postValue(list)
+    }
+
+
+    private fun loadExistingData(){
+        CoroutineScope(Dispatchers.IO + Job()).launch {
+             mLocalRepository.loadData {
+                 handleExistingData(it)
+             }
+        }
     }
 
 

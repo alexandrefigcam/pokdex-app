@@ -27,6 +27,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.android.startKoin
+import org.koin.dsl.module.module
+import org.koin.standalone.StandAloneContext.loadKoinModules
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -54,9 +56,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         startKoin(this, listOf(mainActivityModules))
 
+
         if(supportActionBar != null){
             supportActionBar!!.hide()
         }
+
+
 
         mListener = object:FrameListener{
             override fun onClick(id: String) {
@@ -65,6 +70,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(applicationContext, InfoActivity::class.java)
                 intent.putExtras(bundle)
                 startActivity(intent)
+
+
             }
 
         }
@@ -94,6 +101,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
+
+
+
         onObserver()//Observes the ViewModel's variables
 
 
@@ -109,6 +119,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         })
+
     }
 
     private fun recyclerViewConfig(){
@@ -142,7 +153,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         mMainViewModel.refresh()
-        mMainViewModel.fetchPokeNames()
+        //mMainViewModel.fetchPokeNames()
+
+
     }
 
 
