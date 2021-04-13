@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.flow.flow
 
 class PokeRepository {
 
@@ -41,7 +42,7 @@ class PokeRepository {
     }
 
 
-    fun loadData(onDataChangedCallback:(MutableList<PokeModel>) -> Unit){
+    fun loadData() = flow{
         val ref = FirebaseDatabase.getInstance().getReference("pokemons")
 
 
@@ -57,13 +58,14 @@ class PokeRepository {
                     val poke = h.getValue(PokeModel::class.java)
                     poke?.let { aux.add(it) }
                 }
-                onDataChangedCallback(aux)
+
 
             }
 
 
 
         })
+        emit(aux)
     }
 
     fun refreshDataBase(){

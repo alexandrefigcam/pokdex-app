@@ -46,7 +46,11 @@ class MainViewModel(context: Context):ViewModel() {
     private var mLoading = MutableLiveData<Boolean>()
     var mloading:LiveData<Boolean> = mLoading
 
-    private lateinit var mCouroutineJob:Job
+    private lateinit var mCoroutineSearchJob:Job
+
+    private lateinit var mCoroutineLoadDataJob:Job
+
+    private lateinit var mCoroutineJob:Job
 
 
 
@@ -61,6 +65,14 @@ class MainViewModel(context: Context):ViewModel() {
         //}
 
     //}
+
+
+    fun finishJobs(){
+
+        mCoroutineLoadDataJob.cancel()
+
+    }
+
     fun fetchView(){
         GlobalScope.launch{
             delay(7000L)
@@ -79,7 +91,7 @@ class MainViewModel(context: Context):ViewModel() {
                 mListPoke.postValue(value)
             }
         }
-        mCouroutineJob = job
+        mCoroutineJob = job
 
 
 
@@ -106,7 +118,7 @@ class MainViewModel(context: Context):ViewModel() {
 
     fun refresh(){
 
-        CoroutineScope(Dispatchers.IO + Job()).launch {
+
             mLocalRepository.existance(object : DataListener {
                 override fun Existence(exists: Boolean) {
                    if(!exists){
@@ -118,19 +130,20 @@ class MainViewModel(context: Context):ViewModel() {
                 }
 
             })
-        }
+
 
 
     }
 
     fun searchForPokemon(query:String){
 
-            CoroutineScope(Dispatchers.IO + Job()).launch {
+           var searchJob =  CoroutineScope(Dispatchers.IO + Job()).launch {
                     mLocalRepository.searchForPke(query) {
                         handleDataChanged(it)
                     }
 
             }
+        mCoroutineSearchJob = searchJob
 
     }
 
@@ -144,13 +157,16 @@ class MainViewModel(context: Context):ViewModel() {
     }
 
 
-    private fun loadExistingData(){
-        CoroutineScope(Dispatchers.IO + Job()).launch {
-             mLocalRepository.loadData {
-                 handleExistingData(it)
-             }
+    private fun loadExistingData() {
+        mCoroutineLoadDataJob = CoroutineScope(Dispatchers.IO + Job()).launch {
+            mLocalRepository.loadData().collect{
+                handleExistingData(it)
+            }
+
+
         }
     }
+
 
 
 

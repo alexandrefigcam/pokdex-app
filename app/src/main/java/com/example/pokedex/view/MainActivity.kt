@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         mListener = object:FrameListener{
             override fun onClick(id: String) {
+                mMainViewModel.finishJobs()
                 val bundle = Bundle()
                 bundle.putString("poke_id", id)
                 val intent = Intent(applicationContext, InfoActivity::class.java)
