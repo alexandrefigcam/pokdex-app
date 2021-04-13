@@ -33,7 +33,7 @@ class InfoViewModel(context: Context):ViewModel() {
            mLoading.postValue(false)
        }
         mLoading.postValue(true)
-        mRepository.refreshDataBase()
+
     }
 
 }

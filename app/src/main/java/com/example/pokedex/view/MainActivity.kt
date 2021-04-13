@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         attachIds() // Attach all the view's ids with the global variables
         mMainViewModel.fetchView() //Sets the loading animation while the pokemons are being loaded
+        mMainViewModel.refresh()
         recyclerViewConfig() //Set up recycler view
 
 
@@ -105,6 +106,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
+
         onObserver()//Observes the ViewModel's variables
 
 
@@ -120,6 +122,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         })
+
+
 
     }
 
@@ -153,7 +157,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        mMainViewModel.refresh()
+
         //mMainViewModel.fetchPokeNames()
 
 

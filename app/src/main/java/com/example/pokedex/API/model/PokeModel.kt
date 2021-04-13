@@ -7,9 +7,6 @@ data class PokeModel(
     @SerializedName("id")
     val id:String? = null,
     @SerializedName("name")
-    val name:String? = null,
-    @SerializedName("height")
-    val height:String? = null,
-    @SerializedName("weight")
-    val weight:String? = null
+    val name:String? = null
+
 )
