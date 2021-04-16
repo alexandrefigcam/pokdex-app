@@ -3,6 +3,7 @@ package com.example.pokedex.refactor_task_force.module
 
 import com.example.pokedex.refactor_task_force.API.PokeObjectApiService
 import com.example.pokedex.refactor_task_force.constants.PokeConstants
+import com.example.pokedex.refactor_task_force.listener.FrameListenerImp
 import com.example.pokedex.refactor_task_force.repository.PokeRepositoryImp
 import com.example.pokedex.refactor_task_force.view.PokeListActivity
 import com.example.pokedex.refactor_task_force.view.PokeListViewModel
@@ -34,8 +35,11 @@ object myModules {
     }
 
     val adapterDependency = module {
-        factory { PokeListAdapter() }
+        factory { PokeListAdapter(
+            FrameListenerImp()
+        ) }
     }
+
 
 
     val appComponent = listOf(
