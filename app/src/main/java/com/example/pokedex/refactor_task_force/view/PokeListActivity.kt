@@ -1,4 +1,4 @@
-package com.example.pokedex.view
+package com.example.pokedex.refactor_task_force.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,79 +10,64 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.example.pokedex.InfoActivity
 import com.example.pokedex.R
-import com.example.pokedex.koinModules.mainActivityModules
-import com.example.pokedex.listener.FrameListener
-import com.example.pokedex.view.adapter.MainAdapter
-import com.example.pokedex.viewmodel.MainViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.pokedex.refactor_task_force.listener.FrameListener
+
+import com.example.pokedex.refactor_task_force.view.adapter.PokeListAdapter
 import org.koin.android.ext.android.inject
-import org.koin.android.ext.android.startKoin
-import org.koin.dsl.module.module
-import org.koin.standalone.StandAloneContext.loadKoinModules
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class PokeListActivity() : AppCompatActivity(){
 
 
-    private var mPokemonRecycler:RecyclerView? = null//Pokemons' list recycler view
+    private var mPokemonRecycler: RecyclerView? = null//Pokemons' list recycler view
     private var mPikachu: LottieAnimationView? = null //Pikachu's face lottie animation
-    private var pokeSearch:EditText? = null // SApp's search tool
+    private var pokeSearch: EditText? = null // SApp's search tool
     private var topView: View? = null //Header containing  the search tool and pikachu's animation
-    private var scroll_view:ScrollView? = null //Scroll view containing the recycler view
-    private var load_poke:LottieAnimationView? = null //Lottie animation for inicial loading
-    private var pokedex_logo:ImageView? = null //Logo for inicial loading screen
-    private var pikachu_container:LinearLayout? = null //Linear layout wich conatins the pikachu's lottie animation
-    private var pokeball_deco:LinearLayout? = null
+    private var scroll_view: ScrollView? = null //Scroll view containing the recycler view
+    private var load_poke: LottieAnimationView? = null //Lottie animation for inicial loading
+    private var pokedex_logo: ImageView? = null //Logo for inicial loading screen
+    private var pikachu_container: LinearLayout? = null //Linear layout wich conatins the pikachu's lottie animation
+    private var pokeball_deco: LinearLayout? = null
 
+    private val mPokeListViewModel: PokeListViewModel by viewModel()
+    private val mPokeListAdapter: PokeListAdapter by inject()
 
+    private lateinit var mListener: FrameListener
 
-
-    private val mMainViewModel:MainViewModel by inject() //Main ViewModel by dependency injection
-    private val mAdapter:MainAdapter by inject() // Main Adapter by dependency injection
-
-    private lateinit var mListener:FrameListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        startKoin(this, listOf(mainActivityModules))
+        setContentView(R.layout.activity_poke_list)
 
 
-        if(supportActionBar != null){
+        if(supportActionBar!= null){
             supportActionBar!!.hide()
         }
 
 
-
         mListener = object:FrameListener{
             override fun onClick(id: String) {
-                mMainViewModel.finishJobs()
                 val bundle = Bundle()
                 bundle.putString("poke_id", id)
-                val intent = Intent(applicationContext, InfoActivity::class.java)
+                //val intent = Intent()
                 intent.putExtras(bundle)
-                startActivity(intent)
+                //startActivity(intent)
 
 
             }
 
         }
-        mAdapter.attachListener(mListener)
+        mPokeListAdapter.attachListener(mListener)
 
 
 
         attachIds() // Attach all the view's ids with the global variables
-        mMainViewModel.fetchView() //Sets the loading animation while the pokemons are being loaded
-        mMainViewModel.refresh()
+        mPokeListViewModel.fetchView() //Sets the loading animation while the pokemons are being loaded
         recyclerViewConfig() //Set up recycler view
 
 
@@ -113,7 +98,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         //Deals with the query for searching pokemon
-        pokeSearch?.addTextChangedListener(object:TextWatcher{
+        pokeSearch?.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -122,15 +107,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         })
-
-
-
     }
+
 
     private fun recyclerViewConfig(){
         mPokemonRecycler?.apply{
             layoutManager = GridLayoutManager(context, 2)
-            adapter = mAdapter
+            adapter = mPokeListAdapter
         }
 
     }
@@ -151,15 +134,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun searchDataBase(query:String){
-        mMainViewModel.searchForPokemon(query)
+        mPokeListViewModel.searchForPokemon(query)
     }
 
 
     override fun onResume() {
         super.onResume()
+        mPokeListViewModel.refresh()
+        mPokeListViewModel.fetchPokeNames()
 
-        //mMainViewModel.fetchPokeNames()
 
+    }
+
+    override fun onPause(){
+        super.onPause()
 
     }
 
@@ -171,13 +159,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun onObserver(){
-        mMainViewModel.mlistpokes.observe(this, Observer {
-            mAdapter.updateAdapter(it)
+        mPokeListViewModel.mlistpokes.observe(this, Observer {
+            mPokeListAdapter.updateAdapter(it)
         })
-        mMainViewModel.mfilteredlist.observe(this, Observer{
-            mAdapter.updateAdapter(it)
+        mPokeListViewModel.mfilteredlist.observe(this, Observer{
+            mPokeListAdapter.updateAdapter(it)
         })
-        mMainViewModel.mloading.observe(this, Observer{
+        mPokeListViewModel.mloading.observe(this, Observer{
             if(!it){
                 pokeSearch?.visibility = View.VISIBLE
                 topView?.visibility = View.VISIBLE
@@ -196,8 +184,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    override fun onClick(v: View?) {
-        val id = v?.id
 
-    }
 }

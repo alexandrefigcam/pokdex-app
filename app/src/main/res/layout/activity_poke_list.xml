@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="220dp"
+        android:background="@drawable/shape_header"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/poke_symball_deco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/view">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:alpha="0.55"
+            android:src="@drawable/pokeball"
+            app:tint="@color/white" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/container_pikachu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/searchView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/pikachu"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/container_pikachu"
+            app:layout_constraintEnd_toEndOf="@+id/container_pikachu"
+            app:layout_constraintStart_toStartOf="@+id/container_pikachu"
+            app:layout_constraintTop_toTopOf="@+id/container_pikachu"
+            app:lottie_fileName="pikachu.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
+
+
+    </LinearLayout>
+
+
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_pokeball"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_fileName="poke_load.json"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"/>
+
+    <ImageView
+        android:id="@+id/logo_pokedex"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@mipmap/ic_pokedex_logo_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loading_pokeball" />
+
+
+
+    <EditText
+        android:id="@+id/searchView"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:background="@drawable/shape_search"
+        android:layout_marginTop="130dp"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:hint="Digite o nome do pokémon"
+        android:drawableStart="@drawable/ic_baseline_search_24"
+        android:drawablePadding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Digite o nome do pokemón"
+        android:drawableLeft="@drawable/ic_baseline_search_24" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="490dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginBottom="100dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_pokemons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/scroll"
+            app:layout_constraintEnd_toEndOf="@+id/scroll"
+            app:layout_constraintStart_toStartOf="@+id/scroll" />
+
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/guide"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
