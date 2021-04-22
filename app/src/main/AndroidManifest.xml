@@ -11,12 +11,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".refactor_task_force.myapp.MyApp"
         android:theme="@style/Theme.PokeDex">
-        <activity
-            android:name=".InfoActivity"
-            android:label="@string/title_activity_info"
-            android:theme="@style/Theme.PokeDex.NoActionBar"></activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".refactor_task_force.view.PokeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
