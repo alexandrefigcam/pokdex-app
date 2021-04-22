@@ -33,7 +33,7 @@ class PokeListAdapter(
 
 
 
-    fun updateAdapter(list:List<PokeModelObject>){
+    fun updateAdapter(list:List<PokeModelObject >){
         mList = list
         notifyDataSetChanged()
     }
