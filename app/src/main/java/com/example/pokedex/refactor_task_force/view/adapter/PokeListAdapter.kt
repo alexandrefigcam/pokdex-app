@@ -33,7 +33,7 @@ class PokeListAdapter:RecyclerView.Adapter<PokeListViewHolder>() {
         mListener = listener
     }
 
-    fun updateAdapter(list:List<PokeModelObject>){
+    fun updateAdapter(list:List<PokeModelObject >){
         mList = list
         notifyDataSetChanged()
     }
