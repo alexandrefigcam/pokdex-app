@@ -50,7 +50,7 @@ class PokeListActivity() : AppCompatActivity(){
         }
 
 
-        
+
 
 
 
