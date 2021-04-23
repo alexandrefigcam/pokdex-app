@@ -5,15 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.R
 import com.example.pokedex.refactor_task_force.listener.FrameListener
+import com.example.pokedex.refactor_task_force.listener.FrameListenerImp
 
 import com.example.pokedex.refactor_task_force.model.PokeModelObject
 import com.example.pokedex.refactor_task_force.view.PokeListViewModel
 import com.example.pokedex.refactor_task_force.view.viewholder.PokeListViewHolder
 
-class PokeListAdapter:RecyclerView.Adapter<PokeListViewHolder>() {
+class PokeListAdapter(
+        var mListener:FrameListenerImp
+):RecyclerView.Adapter<PokeListViewHolder>() {
 
 
-    private lateinit var  mListener: FrameListener
     private var mList:List<PokeModelObject> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokeListViewHolder {
@@ -29,9 +31,7 @@ class PokeListAdapter:RecyclerView.Adapter<PokeListViewHolder>() {
     }
 
 
-    fun attachListener(listener:FrameListener){
-        mListener = listener
-    }
+
 
     fun updateAdapter(list:List<PokeModelObject>){
         mList = list

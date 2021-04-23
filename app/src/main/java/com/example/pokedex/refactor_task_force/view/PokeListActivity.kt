@@ -50,19 +50,8 @@ class PokeListActivity() : AppCompatActivity(){
         }
 
 
-        mListener = object:FrameListener{
-            override fun onClick(id: String) {
-                val bundle = Bundle()
-                bundle.putString("poke_id", id)
-                //val intent = Intent()
-                intent.putExtras(bundle)
-                //startActivity(intent)
+        
 
-
-            }
-
-        }
-        mPokeListAdapter.attachListener(mListener)
 
 
 
