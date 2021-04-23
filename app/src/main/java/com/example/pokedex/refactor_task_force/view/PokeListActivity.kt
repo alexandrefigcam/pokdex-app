@@ -73,6 +73,8 @@ class PokeListActivity() : AppCompatActivity(){
         mPikachu?.playAnimation()
 
 
+        mPokeListViewModel.refresh()
+        mPokeListViewModel.fetchPokeNames()
 
 
 
@@ -128,8 +130,7 @@ class PokeListActivity() : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-        mPokeListViewModel.refresh()
-        mPokeListViewModel.fetchPokeNames()
+
 
 
     }

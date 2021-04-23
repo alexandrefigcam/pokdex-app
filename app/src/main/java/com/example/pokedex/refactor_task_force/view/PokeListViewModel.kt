@@ -31,6 +31,7 @@ class PokeListViewModel(
 
 
 
+
     fun fetchView(){
         GlobalScope.launch{
             delay(7000L)
@@ -44,8 +45,19 @@ class PokeListViewModel(
 
         val aux_name:MutableList<PokeModelObject> = arrayListOf()
         val job = CoroutineScope(Dispatchers.IO + Job()).launch {
-            pokeFlow().collect {value ->
-                mListPoke.postValue(value)
+            for(k in 1..700){
+                mRepository.getPokemonNames(k.toString(), object: PokeObjectApiListener {
+                    override fun onSucces(model: PokeModelObject) {
+                        aux_name.add(model)
+                        mRepository.insertPokemon(model)
+                        mListPoke.postValue(aux_name)
+                    }
+
+                    override fun onFailure(str: String) {
+
+                    }
+
+                })
             }
         }
 
@@ -57,19 +69,7 @@ class PokeListViewModel(
 
     suspend fun pokeFlow() = flow{
         val aux_poke: MutableList<PokeModelObject> = arrayListOf()
-        for(k in 1..700){
-            mRepository.getPokemonNames(k.toString(), object: PokeObjectApiListener {
-                override fun onSucces(model: PokeModelObject) {
-                    aux_poke.add(model)
-                    mRepository.insertPokemon(model)
-                }
 
-                override fun onFailure(str: String) {
-
-                }
-
-            })
-        }
         emit(aux_poke)
     }
 
