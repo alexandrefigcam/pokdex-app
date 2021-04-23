@@ -37,7 +37,7 @@ class PokeListActivity() : AppCompatActivity(){
     private val mPokeListViewModel: PokeListViewModel by viewModel()
     private val mPokeListAdapter: PokeListAdapter by inject()
 
-    private lateinit var mListener: FrameListener
+    
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
