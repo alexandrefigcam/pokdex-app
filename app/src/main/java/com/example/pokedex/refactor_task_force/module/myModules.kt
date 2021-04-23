@@ -5,6 +5,7 @@ import com.example.pokedex.refactor_task_force.API.PokeObjectApiService
 import com.example.pokedex.refactor_task_force.constants.PokeConstants
 import com.example.pokedex.refactor_task_force.listener.FrameListenerImp
 import com.example.pokedex.refactor_task_force.repository.PokeRepositoryImp
+import com.example.pokedex.refactor_task_force.view.InfoViewModel
 import com.example.pokedex.refactor_task_force.view.PokeListActivity
 import com.example.pokedex.refactor_task_force.view.PokeListViewModel
 import com.example.pokedex.refactor_task_force.view.adapter.PokeListAdapter
@@ -31,19 +32,29 @@ object myModules {
                        .create(PokeObjectApiService::class.java)
                 )
             )
+
+        }
+    }
+
+    val instanceForInfo = module{
+        viewModel {
+            InfoViewModel()
         }
     }
 
     val adapterDependency = module {
         factory { PokeListAdapter(
-                FrameListenerImp()
+                FrameListenerImp(
+                        mContext = get()
+                )
         ) }
     }
 
 
     val appComponent = listOf(
               instance,
-        adapterDependency
+        adapterDependency,
+        instanceForInfo
 
     )
 }
