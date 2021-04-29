@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.airbnb.lottie.LottieAnimationView
 import com.example.pokedex.R
@@ -17,6 +18,7 @@ class PokeInfoActivity : AppCompatActivity(), View.OnClickListener {
     private var poke_image:ImageView? = null
     private var back_icon:ImageView? = null
     private var swablu:LottieAnimationView? = null
+    private var name_field: TextView? = null
 
     private val mInfoViewModel: InfoViewModel by viewModel()
 
@@ -42,6 +44,8 @@ class PokeInfoActivity : AppCompatActivity(), View.OnClickListener {
     private fun getData(){
         val extras = intent.extras
         val id = extras?.getString("poke_id")
+        val name = extras?.getString("poke_name")
+        name_field?.setText(name)
         Picasso.with(this).load("https://pokeres.bastionbot.org/images/pokemon/${id}.png").into(poke_image)
     }
 
@@ -55,6 +59,7 @@ class PokeInfoActivity : AppCompatActivity(), View.OnClickListener {
         poke_image = findViewById(R.id.poke_image)
         back_icon = findViewById(R.id.back_icon)
         swablu = findViewById(R.id.swablu)
+        name_field = findViewById(R.id.pke_name)
     }
 
 
@@ -66,6 +71,7 @@ class PokeInfoActivity : AppCompatActivity(), View.OnClickListener {
                 back_pokeball?.visibility = View.GONE
                 poke_image?.visibility = View.GONE
                 back_icon?.visibility = View.GONE
+                name_field?.visibility= View.GONE
 
 
             } else {
@@ -75,6 +81,7 @@ class PokeInfoActivity : AppCompatActivity(), View.OnClickListener {
                 back_pokeball?.visibility = View.VISIBLE
                 poke_image?.visibility = View.VISIBLE
                 back_icon?.visibility = View.VISIBLE
+                name_field?.visibility = View.VISIBLE
 
             }
         })

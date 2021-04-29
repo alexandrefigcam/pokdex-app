@@ -39,7 +39,7 @@ class PokeListViewHolder(itemView:View): RecyclerView.ViewHolder(itemView) {
 
 
         poke_image?.setOnClickListener{
-            listener.onClick(model.id.toString())
+            listener.onClick(model)
         }
     }
 

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/info_backgorund"
-    tools:context=".InfoActivity">
+    >
 
     <View
         android:id="@+id/loading_curtain"
@@ -15,6 +15,20 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/pke_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="300dp"
+        android:text="Nome do Pokemon"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="@color/name_color"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageView
         android:id="@+id/pokeball_back"
@@ -28,6 +42,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
+
     <ImageView
         android:id="@+id/poke_image"
         android:layout_width="250dp"
@@ -35,6 +51,8 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <ImageView
         android:id="@+id/back_icon"
@@ -49,6 +67,7 @@
 
 
 
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/swablu"
         android:layout_width="300dp"
@@ -60,6 +79,8 @@
         app:lottie_autoPlay="true"
         app:lottie_fileName="swablu.json"
         app:lottie_loop="true" />
+
+
 
 
 
