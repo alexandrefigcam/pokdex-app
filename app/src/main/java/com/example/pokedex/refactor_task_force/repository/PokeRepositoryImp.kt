@@ -20,7 +20,19 @@ class PokeRepositoryImp(
 ):PokeRepository {
 
 
-    override suspend fun getPokemonNames(id: String, listener: PokeObjectApiListener) {
+
+    override suspend fun getPokemonNamesFlow(id: String): Flow<PokeModelObject?> = flow {
+
+        var id:Int = 0
+
+        while(id<=700){
+           var pke = PokeApi.getPokeName(id.toString()).body()
+            emit(pke)
+        }
+    }
+
+
+    /*override suspend fun getPokemonNames(id: String, listener: PokeObjectApiListener) {
 
 
         val call = PokeApi.getPokeName(id)
@@ -45,7 +57,7 @@ class PokeRepositoryImp(
             }
 
         })
-    }
+    }*/
 
     override fun insertPokemon(model: PokeModelObject) {
         val ref = FirebaseDatabase.getInstance().getReference("pokemons")
