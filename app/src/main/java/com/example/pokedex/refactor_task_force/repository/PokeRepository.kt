@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PokeRepository {
 
-    suspend fun getPokemonNamesFlow(id:String):Flow<PokeModelObject?>
+    suspend fun getPokemonNamesFlow():Flow<PokeModelObject?>
 
     //Captura pokemons através da API
    // suspend fun getPokemonNames(id:String, listener: PokeObjectApiListener)

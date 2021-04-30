@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Call
@@ -21,13 +22,15 @@ class PokeRepositoryImp(
 
 
 
-    override suspend fun getPokemonNamesFlow(id: String): Flow<PokeModelObject?> = flow {
+    override suspend fun getPokemonNamesFlow(): Flow<PokeModelObject?> = flow {
 
         var id:Int = 0
 
         while(id<=700){
            var pke = PokeApi.getPokeName(id.toString()).body()
             emit(pke)
+            id = id + 1
+            delay(300L)
         }
     }
 

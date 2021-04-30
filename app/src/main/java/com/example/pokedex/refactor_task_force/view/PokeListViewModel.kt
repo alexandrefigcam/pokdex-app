@@ -41,7 +41,24 @@ class PokeListViewModel(
 
     }
 
-    fun fetchPokeNames(){
+
+    fun fetchPokeNames() {
+
+        var list_pke:MutableList<PokeModelObject> = arrayListOf()
+        CoroutineScope(Dispatchers.IO).launch{
+            mRepository.getPokemonNamesFlow().collect(){pokemon ->
+                pokemon?.let {
+                    mRepository.insertPokemon(it)
+                }
+                pokemon?.let {
+                    list_pke.add(it)
+                }
+                mListPoke.postValue(list_pke)
+
+            }
+    }
+
+   /* fun fetchPokeNames(){
 
         val aux_name:MutableList<PokeModelObject> = arrayListOf()
         val job = CoroutineScope(Dispatchers.IO + Job()).launch {
@@ -59,7 +76,7 @@ class PokeListViewModel(
 
                 })
             }
-        }
+        } */
 
 
 
