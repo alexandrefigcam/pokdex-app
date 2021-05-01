@@ -10,5 +10,5 @@ interface PokeObjectApiService {
 
 
     @GET("pokemon/{id}/")
-    fun getPokeName(@Path("id") id:String): Response<PokeModelObject>
+    suspend fun getPokeName(@Path("id") id:String): Response<PokeModelObject>
 }
