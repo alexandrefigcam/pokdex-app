@@ -9,15 +9,17 @@ interface PokeRepository {
 
     suspend fun getPokemonNamesFlow():Flow<PokeModelObject?>
 
+
+    suspend fun getAllPokemons():Flow<MutableList<PokeModelObject>>
+
     //Captura pokemons através da API
    // suspend fun getPokemonNames(id:String, listener: PokeObjectApiListener)
 
     //Inserer pokemons no firebase
-    fun insertPokemon(model: PokeModelObject)
+     suspend fun insertPokemon(model: PokeModelObject)
 
 
-    //Carrega pokemons inseridos no firebase
-    fun loadData(): Flow<MutableList<PokeModelObject>>
+
 
     //Reseta firebase
     fun refreshDataBase()

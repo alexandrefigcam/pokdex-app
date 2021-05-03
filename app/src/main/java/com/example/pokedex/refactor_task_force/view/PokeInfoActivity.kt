@@ -43,8 +43,8 @@ class PokeInfoActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getData(){
         val extras = intent.extras
-        val id = extras?.getString("poke_id")
-        val name = extras?.getString("poke_name")
+        val id = extras?.getString("id")
+        val name = extras?.getString("name")
         name_field?.setText(name)
         Picasso.with(this).load("https://pokeres.bastionbot.org/images/pokemon/${id}.png").into(poke_image)
     }

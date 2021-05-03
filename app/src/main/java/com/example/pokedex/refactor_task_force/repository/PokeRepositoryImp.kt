@@ -4,6 +4,7 @@ package com.example.pokedex.refactor_task_force.repository
 import com.example.pokedex.refactor_task_force.API.PokeObjectApiListener.PokeObjectApiListener
 import com.example.pokedex.refactor_task_force.API.PokeObjectApiService
 import com.example.pokedex.refactor_task_force.model.PokeModelObject
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,16 +23,47 @@ class PokeRepositoryImp(
 
 
 
+    private var thePokemonList: MutableList<PokeModelObject> = arrayListOf()
+
+
     override suspend fun getPokemonNamesFlow(): Flow<PokeModelObject?> = flow {
-
         var id:Int = 0
-
+        
         while(id<=700){
-           var pke = PokeApi.getPokeName(id.toString()).body()
-            emit(pke)
+            var pke = PokeApi.getPokeName(id.toString()).body()
+
+
             id = id + 1
-            delay(300L)
+            pke?.let {
+                emit(it)
+            }
         }
+
+    }
+
+    override suspend fun getAllPokemons(): Flow<MutableList<PokeModelObject>> = flow{
+        val ref = FirebaseDatabase.getInstance().getReference("pokemons")
+
+        var pokemonList:MutableList<PokeModelObject> = arrayListOf()
+
+
+        ref.addValueEventListener(object:ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                pokemonList.clear()
+                for( h in snapshot.children){
+                    val poke = h.getValue(PokeModelObject::class.java)
+                    poke?.let{
+                        pokemonList.add(it)
+                    }
+                }
+            }
+
+        })
+        emit(pokemonList)
     }
 
 
@@ -62,7 +94,7 @@ class PokeRepositoryImp(
         })
     }*/
 
-    override fun insertPokemon(model: PokeModelObject) {
+    override suspend fun insertPokemon(model: PokeModelObject) {
         val ref = FirebaseDatabase.getInstance().getReference("pokemons")
         val pokeId = ref.push().key
 
@@ -70,31 +102,7 @@ class PokeRepositoryImp(
         ref.child(pokeId.toString()).setValue(PokeModelObject(pokeId, model.id, model.name))
     }
 
-    override fun loadData(): Flow<MutableList<PokeModelObject>> = flow {
-        val ref = FirebaseDatabase.getInstance().getReference("pokemons")
 
-
-        val aux:MutableList<PokeModelObject> = arrayListOf()
-
-        ref.addValueEventListener(object: ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for( h in snapshot.children){
-                    val poke = h.getValue(PokeModelObject::class.java)
-                    poke?.let { aux.add(it) }
-                }
-
-
-            }
-
-
-
-        })
-        emit(aux)
-    }
 
     override fun refreshDataBase() {
         val ref = FirebaseDatabase.getInstance().getReference("pokemons")
@@ -121,6 +129,7 @@ class PokeRepositoryImp(
 
                 if (query.isNotEmpty()) {
 
+                    aux.clear()
                     for (h in snapshot.children) {
                         val poke = h.getValue(PokeModelObject::class.java)
                         if (poke?.name?.contains(query) == true) {
@@ -129,6 +138,7 @@ class PokeRepositoryImp(
                     }
                     onDataChangedCallback(aux)
                 } else {
+                    aux_for_empty.clear()
                     for(h in snapshot.children){
                         val poke = h.getValue(PokeModelObject::class.java)
                         poke?.let { aux_for_empty.add(it) }

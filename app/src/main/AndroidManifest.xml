@@ -12,6 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
         android:theme="@style/Theme.PokeDex">
         <activity android:name=".refactor_task_force.view.PokeInfoActivity"></activity>
         <activity android:name=".refactor_task_force.view.PokeListActivity">

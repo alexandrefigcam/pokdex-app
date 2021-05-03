@@ -14,14 +14,17 @@ class PokeListViewModel(
     val mRepository: PokeRepositoryImp
 ): ViewModel() {
 
+
+
+
     private var mListPokeIds = MutableLiveData<List<String>>()
     var mid: LiveData<List<String>> = mListPokeIds
 
-    private var mListPoke = MutableLiveData<List<PokeModelObject>>()
-    var mlistpokes: LiveData<List<PokeModelObject>> = mListPoke
+    private var mPokemonList = MutableLiveData<MutableList<PokeModelObject>>()
+    var mpokemonList: LiveData<MutableList<PokeModelObject>> = mPokemonList
 
-    private var mFilteredList = MutableLiveData<List<PokeModelObject>>()
-    var mfilteredlist: LiveData<List<PokeModelObject>> = mFilteredList
+    private var mFilteredPokemonList = MutableLiveData<MutableList<PokeModelObject>>()
+    var mfilteredpokemonList: LiveData<MutableList<PokeModelObject>> = mFilteredPokemonList
 
     private var mErrorMessage = MutableLiveData<String>()
     var merrormessage: LiveData<String> = mErrorMessage
@@ -42,20 +45,26 @@ class PokeListViewModel(
     }
 
 
+
     fun fetchPokeNames() {
 
-        var list_pke:MutableList<PokeModelObject> = arrayListOf()
-        CoroutineScope(Dispatchers.IO).launch{
-            mRepository.getPokemonNamesFlow().collect(){pokemon ->
+        CoroutineScope(Dispatchers.IO).launch {
+            mRepository.getPokemonNamesFlow().collect() { pokemon ->
+
                 pokemon?.let {
                     mRepository.insertPokemon(it)
                 }
-                pokemon?.let {
-                    list_pke.add(it)
-                }
-                mListPoke.postValue(list_pke)
 
             }
+        }
+    }
+
+    fun loadAllPokemons(){
+        CoroutineScope(Dispatchers.IO + Job()).launch {
+            mRepository.getAllPokemons().collect(){pokemonStream ->
+                mPokemonList.postValue(pokemonStream)
+            }
+        }
     }
 
    /* fun fetchPokeNames(){
@@ -82,13 +91,9 @@ class PokeListViewModel(
 
 
 
-    }
 
-    suspend fun pokeFlow() = flow{
-        val aux_poke: MutableList<PokeModelObject> = arrayListOf()
 
-        emit(aux_poke)
-    }
+
 
     fun refresh(){
 
@@ -104,24 +109,18 @@ class PokeListViewModel(
 
     fun searchForPokemon(query:String){
 
-        var searchJob =  CoroutineScope(Dispatchers.IO + Job()).launch {
-            mRepository.searchForPke(query) {
-                handleDataChanged(it)
-            }
-
+        mRepository.searchForPke(query){
+            handleDataChanged(it)
         }
 
 
     }
 
-    private fun handleDataChanged(list:MutableList<PokeModelObject>){
-        mFilteredList.postValue(list)
+    private fun handleDataChanged(pokeListFiltered:MutableList<PokeModelObject>){
+        mFilteredPokemonList.postValue(pokeListFiltered)
     }
 
 
-    private fun handleExistingData(list: MutableList<PokeModelObject>){
-        mListPoke.postValue(list)
-    }
 
 
 

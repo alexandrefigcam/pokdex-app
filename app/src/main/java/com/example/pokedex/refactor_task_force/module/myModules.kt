@@ -43,8 +43,10 @@ object myModules {
     }
 
     val adapterDependency = module {
+        single { PokeListActivity() }
         factory { PokeListAdapter(
                 FrameListenerImp(
+                        mActivity = get(),
                         mContext = get()
                 )
         ) }

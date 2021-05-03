@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.example.pokedex.R
+import com.example.pokedex.refactor_task_force.constants.PokeConstants
 import com.example.pokedex.refactor_task_force.listener.FrameListener
+import com.example.pokedex.refactor_task_force.model.PokeModelObject
 
 import com.example.pokedex.refactor_task_force.view.adapter.PokeListAdapter
 import org.koin.android.ext.android.inject
@@ -52,16 +54,9 @@ class PokeListActivity() : AppCompatActivity(){
 
 
 
-
-
-
         attachIds() // Attach all the view's ids with the global variables
         mPokeListViewModel.fetchView() //Sets the loading animation while the pokemons are being loaded
         recyclerViewConfig() //Set up recycler view
-
-
-
-
 
 
 
@@ -76,6 +71,9 @@ class PokeListActivity() : AppCompatActivity(){
 
         mPokeListViewModel.refresh()
         mPokeListViewModel.fetchPokeNames()
+        mPokeListViewModel.loadAllPokemons()
+
+
 
 
 
@@ -94,7 +92,7 @@ class PokeListActivity() : AppCompatActivity(){
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query:String = pokeSearch?.text.toString()
-                searchDataBase(query)
+                searchData(query)
             }
 
         })
@@ -124,13 +122,14 @@ class PokeListActivity() : AppCompatActivity(){
 
     }
 
-    private fun searchDataBase(query:String){
+    private fun searchData(query:String){
         mPokeListViewModel.searchForPokemon(query)
     }
 
 
     override fun onResume() {
         super.onResume()
+
 
 
 
@@ -149,12 +148,14 @@ class PokeListActivity() : AppCompatActivity(){
 
 
     private fun onObserver(){
-        mPokeListViewModel.mlistpokes.observe(this, Observer {
-            mPokeListAdapter.updateAdapter(it)
+        mPokeListViewModel.mpokemonList.observe(this, Observer {
+            it?.let { pokemon ->
+                mPokeListAdapter.updateAdapter(pokemon)
+            }
         })
-        mPokeListViewModel.mfilteredlist.observe(this, Observer{
+       mPokeListViewModel. mfilteredpokemonList.observe(this, Observer{
             mPokeListAdapter.updateAdapter(it)
-        })
+       })
         mPokeListViewModel.mloading.observe(this, Observer{
             if(!it){
                 pokeSearch?.visibility = View.VISIBLE
@@ -173,6 +174,8 @@ class PokeListActivity() : AppCompatActivity(){
         })
 
     }
+
+
 
 
 }
