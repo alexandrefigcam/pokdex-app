@@ -97,6 +97,7 @@ class PokeListViewModel(
 
     fun refresh(){
 
+
         CoroutineScope(Dispatchers.IO).launch{
             mRepository.refreshDataBase()
 
@@ -109,16 +110,16 @@ class PokeListViewModel(
 
     fun searchForPokemon(query:String){
 
-        mRepository.searchForPke(query){
-            handleDataChanged(it)
+        CoroutineScope(Dispatchers.IO + Job()).launch {
+            mRepository.searchForPke(query){
+                 mFilteredPokemonList.postValue(it)
+            }
         }
 
 
+
     }
 
-    private fun handleDataChanged(pokeListFiltered:MutableList<PokeModelObject>){
-        mFilteredPokemonList.postValue(pokeListFiltered)
-    }
 
 
 

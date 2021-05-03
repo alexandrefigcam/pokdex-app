@@ -29,7 +29,7 @@ class PokeRepositoryImp(
     override suspend fun getPokemonNamesFlow(): Flow<PokeModelObject?> = flow {
         var id:Int = 0
         
-        while(id<=700){
+        while(id<=100){
             var pke = PokeApi.getPokeName(id.toString()).body()
 
 
@@ -149,4 +149,6 @@ class PokeRepositoryImp(
 
         })
     }
+
+
 }
